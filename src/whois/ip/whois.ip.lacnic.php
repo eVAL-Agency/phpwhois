@@ -25,34 +25,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-require_once('whois.parser.php');
+namespace phpwhois\whois\ip;
 
-if (!defined('__LACNIC_HANDLER__'))
-	define('__LACNIC_HANDLER__', 1);
+class lacnic_handler {
+	function parse($data_str, $query) {
+		$translate = [
+			'fax-no'     => 'fax',
+			'e-mail'     => 'email',
+			'nic-hdl-br' => 'handle',
+			'nic-hdl'    => 'handle',
+			'person'     => 'name',
+			'netname'    => 'name',
+			'descr'      => 'desc',
+			'country'    => 'address.country'
+		];
 
-class lacnic_handler
-	{
-	function parse($data_str, $query)
-		{
-		$translate = array(
-                      'fax-no' => 'fax',
-                      'e-mail' => 'email',
-                      'nic-hdl-br' => 'handle',
-                      'nic-hdl' => 'handle',
-                      'person' => 'name',
-                      'netname' => 'name',
-                      'descr' => 'desc',
-                      'country' => 'address.country'
-		                  );
+		$contacts = [
+			'owner-c' => 'owner',
+			'tech-c'  => 'tech',
+			'abuse-c' => 'abuse',
+			'admin-c' => 'admin'
+		];
 
-		$contacts = array(
-                      'owner-c' => 'owner',
-                      'tech-c' => 'tech',
-                      'abuse-c' => 'abuse',
-                      'admin-c' => 'admin'
-		                  );
-
-		$r = generic_parser_a($data_str, $translate, $contacts, 'network');
+		$r = \phpwhois\generic_parser_a($data_str, $translate, $contacts, 'network');
 
 		unset($r['network']['owner']);
 		unset($r['network']['ownerid']);
@@ -64,16 +59,14 @@ class lacnic_handler
 		unset($r['network']['nslastaa']);
 		unset($r['network']['inetrev']);
 
-		if (!empty($r['network']['aut-num']))
-			$r['network']['handle'] = $r['network']['aut-num'];
+		if(!empty($r['network']['aut-num'])) $r['network']['handle'] = $r['network']['aut-num'];
 
-		if (isset($r['network']['nserver']))
-			$r['network']['nserver'] = array_unique($r['network']['nserver']);
+		if(isset($r['network']['nserver'])) $r['network']['nserver'] = array_unique($r['network']['nserver']);
 
-		$r = array( 'regrinfo' => $r );
-		$r['regyinfo']['type'] ='ip';
+		$r                          = ['regrinfo' => $r];
+		$r['regyinfo']['type']      = 'ip';
 		$r['regyinfo']['registrar'] = 'Latin American and Caribbean IP address Regional Registry';
+
 		return $r;
-		}
 	}
-?>
+}

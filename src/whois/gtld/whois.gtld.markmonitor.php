@@ -25,41 +25,60 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined('__MARKMONITOR_HANDLER__'))
-	define('__MARKMONITOR_HANDLER__', 1);
+namespace phpwhois\whois\gtld;
 
-require_once('whois.parser.php');
+class markmonitor_handler {
+	function parse($data_str, $query) {
+		$items = [
+			'owner.name'            => 'Registrant Name:',
+			'owner.organization'    => 'Registrant Organization:',
+			'owner.address.street'  => 'Registrant Street:',
+			'owner.address.city'    => 'Registrant City:',
+			'owner.address.state'   => 'Registrant State/Province:',
+			'owner.address.pcode'   => 'Registrant Postal Code:',
+			'owner.address.country' => 'Registrant Country:',
+			'owner.phone'           => 'Registrant Phone:',
+			'owner.fax'             => 'Registrant Fax:',
+			'owner.email'           => 'Registrant Email:',
 
-class markmonitor_handler
-	{
-	function parse($data_str, $query)
-		{
-		$items = array(
-                  'owner' => 'Registrant:',
-                  'admin' => 'Administrative Contact:',
-                  'tech' => 'Technical Contact, Zone Contact:',
-                  'domain.name' => 'Domain Name:',
-                  'domain.sponsor' => 'Registrar Name:',
-                  'domain.nserver' => 'Domain servers in listed order:',
-                  'domain.created' => 'Created on..............:',
-                  'domain.expires' => 'Expires on..............:',
-                  'domain.changed' => 'Record last updated on..:'
-		              );
+			'admin.name'            => 'Admin Name:',
+			'admin.organization'    => 'Admin Organization:',
+			'admin.address.street'  => 'Admin Street:',
+			'admin.address.city'    => 'Admin City:',
+			'admin.address.state'   => 'Admin State/Province:',
+			'admin.address.pcode'   => 'Admin Postal Code:',
+			'admin.address.country' => 'Admin Country:',
+			'admin.phone'           => 'Admin Phone:',
+			'admin.fax'             => 'Admin Fax:',
+			'admin.email'           => 'Admin Email:',
 
-		$r = easy_parser($data_str, $items, 'dmy', false, false, true);
+			'tech.name'             => 'Tech Name:',
+			'tech.organization'     => 'Tech Organization:',
+			'tech.address.street'   => 'Tech Street:',
+			'tech.address.city'     => 'Tech City:',
+			'tech.address.state'    => 'Tech State/Province:',
+			'tech.address.pcode'    => 'Tech Postal Code:',
+			'tech.address.country'  => 'Tech Country:',
+			'tech.phone'            => 'Tech Phone:',
+			'tech.fax'              => 'Tech Fax:',
+			'tech.email'            => 'Tech Email:',
 
-		if (isset($r['domain']['sponsor']) && is_array($r['domain']['sponsor']))
+			'domain.name'           => 'Domain Name:',
+			'domain.sponsor'        => 'Registrar Name:',
+			'domain.nserver'        => 'Domain servers in listed order:',
+			'domain.created'        => 'Created on..............:',
+			'domain.expires'        => 'Expires on..............:',
+			'domain.changed'        => 'Record last updated on..:'
+		];
+
+		//$r = easy_parser($data_str, $items, 'dmy', false, false, true);
+		$r = \phpwhois\get_blocks($data_str, $items, false, false);
+		\phpwhois\format_dates($r, 'dmy');
+
+		if(isset($r['domain']['sponsor']) && is_array($r['domain']['sponsor'])){
 			$r['domain']['sponsor'] = $r['domain']['sponsor'][0];
-
-		foreach($r as $key => $part)
-			{
-			if (isset($part['address']))
-				{
-				$r[$key]['organization'] = array_shift($r[$key]['address']);
-				$r[$key]['address']['country'] = array_pop($r[$key]['address']);
-				}
-			}
-		return $r;
 		}
+
+		return $r;
 	}
-?>
+}
