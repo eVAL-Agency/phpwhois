@@ -25,23 +25,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-if (!defined('__ORG_HANDLER__'))
-	define('__ORG_HANDLER__', 1);
+if (!defined('__NAMEJUICE_HANDLER__'))
+        define('__NAMEJUICE_HANDLER__', 1);
 
 require_once('whois.parser.php');
 
-class org_handler
+class namejuice_handler
 	{
 	function parse($data_str, $query)
 		{
-		$r['regrinfo'] = generic_parser_b($data_str['rawdata']);
+		$items = array(
+					'owner' => 'Registrant Contact:',
+					'admin' => 'Administrative Contact:',
+					'tech' => 'Technical Contact:',
+					'domain.name' => 'Domain name:',
+					'domain.nserver.' => 'Name Servers:',
+					'domain.created' => 'Creation date:',
+					'domain.expires' => 'Expiration date:',
+					'domain.changed' => 'Update date:',
+					'domain.status' => 'Status:',
+					'domain.sponsor' => 'Registration Service Provided By:'
+				);
 
-		if (!strncmp($data_str['rawdata'][0], 'WHOIS LIMIT EXCEEDED', 20))
-			$r['regrinfo']['registered'] = 'unknown';
-
-		$r['regyinfo']['referrer'] = 'http://www.pir.org/';
-		$r['regyinfo']['registrar'] = 'Public Interest Registry';
-		return $r;
+		return easy_parser($data_str, $items, 'dmy', false, true, true);
 		}
 	}
 ?>
