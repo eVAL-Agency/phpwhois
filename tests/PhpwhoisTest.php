@@ -8,7 +8,7 @@
  */
 
 if(!class_exists('phpwhois\\Whois')){
-	require_once(__DIR__ . '/../src/whois.main.php');
+	require_once(__DIR__ . '/../src/phpwhois/whois.main.php');
 }
 
 /**
