@@ -108,7 +108,7 @@ class WhoisQuery {
 	public $errstr = [];
 
 	// This release of the package
-	public $CODE_VERSION = '4.2.2~core1';
+	public $CODE_VERSION = '5.0.0';
 
 	/**
 	 * List of servers and handlers

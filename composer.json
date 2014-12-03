@@ -1,8 +1,8 @@
 {
     "name": "phpwhois/phpwhois",
-    "description": "phpWhois - library for querying whois services and parsing results. Based on phpwhois.org",
+    "description": "phpWhois - library for querying whois services and parsing results. Based on phpwhois.pw, which is based on phpwhois.org.",
     "keywords": ["PHP","Whois","phpWhois"],
-    "homepage": "http://phpwhois.pw",
+    "homepage": "https://git.eval.bz/eval/phpwhois",
     "type": "library",
     "license": "GPL-2.0",
     "authors": [
@@ -21,19 +21,22 @@
         {
             "name": "Dmitry Lukashin",
             "email": "dmitry@lukashin.ru"
-        }
+        },
+	    {
+		    "name": "Charlie Powell",
+		    "email": "charlie@evalagency.com"
+	    }
     ],
-    "version": "4.2.3",
+    "version": "5.0.0",
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     },
     "suggest": {
         "lib-openssl": "*"
     },
     "autoload": {
         "files": [
-            "src/whois.main.php",
-            "src/whois.utils.php"
+            "src/phpwhois/whois.main.php"
         ]
     }
 }
