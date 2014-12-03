@@ -70,12 +70,12 @@ other information like AS, i.e, both of the following examples
 work:
 ```php
 $whois = new phpwhois\Whois();
-$result = $whois->Lookup('example.com');
+$result = $whois->lookup('example.com');
 
-$whois = new Whois();
+$whois = new phpwhois\Whois();
 $result = $whois->lookup('62.97.102.115');
 
-$whois = new Whois();
+$whois = new phpwhois\Whois();
 $result = $whois->lookup('AS220');
 ```
 Using special whois server
@@ -93,7 +93,7 @@ The currently known whois services that offer special acccess are:
   this service when querying ripe ip addresses that way:
   ```php
   $whois = new phpwhois\Whois();
-  $whois->UseServer('uk','whois.ripe.net?-V{version},{ip} {query}');
+  $whois->query->useServer('uk','whois.ripe.net?-V{version},{ip} {query}');
   $result = $whois->lookup('62.97.102.115');
   ```
 
@@ -104,7 +104,7 @@ The currently known whois services that offer special acccess are:
 
 ```php
 $whois = new phpwhois\Whois();
-$whois->UseServer('uk','whois.isoc.org.il?-V{version},{ip} {query}');
+$whois->query->useServer('uk','whois.isoc.org.il?-V{version},{ip} {query}');
 $result = $whois->lookup('example.co.uk');
 ```
 
